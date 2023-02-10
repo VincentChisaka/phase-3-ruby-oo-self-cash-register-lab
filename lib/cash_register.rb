@@ -47,6 +47,6 @@ class CashRegister
   
 end
 
-shukri = CashRegister.new(10)
+binchi = CashRegister.new(10)
 
-binding.pry
+#binding.pry
