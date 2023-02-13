@@ -1,52 +1,35 @@
-
-require "pry"
-
 class CashRegister
-  attr_reader :total, :employee_discount
-  attr_accessor :total
 
-  def initialize(employee_discount = 0)
-    @employee_discount = employee_discount
+  attr_accessor :discount, :total, :titles, :last_amount
+
+  def initialize(discount=0)
     @total = 0
-    @items = []
+    @titles = []
+    @last_amount = 0
+    @discount = discount
   end
 
-  def discount
-    @employee_discount
+  def add_item(title, price, quantity=1)
+    self.total += price * quantity
+    self.last_amount = quantity * price
+    1..quantity.times { @titles << title }
   end
 
-  def add_item(title,price,quantity = 1)
-    @total += price * quantity
-    @items += [title] * quantity
-  end
-
-   def apply_discount
-    if @employee_discount > 0
-      @total -= (@total * @employee_discount / 100)
-      "After the discount, the total comes to $#{@total}."
+  def apply_discount
+    if self.discount != 0
+      self.total -= ((self.discount.to_f / 100) * self.total).to_i
+      "After the discount, the total comes to $#{self.total}."
     else
       "There is no discount to apply."
     end
   end
 
   def items
-   @items
+    self.titles
   end
-  
+
   def void_last_transaction
-    return if @items.empty?
-    last_item = @items.pop
-    last_price = @total / @items.length
-    @total -= last_price
+    self.total -= last_amount
   end
 
-  
-  
-  
-
-  
 end
-
-binchi = CashRegister.new(10)
-
-#binding.pry
